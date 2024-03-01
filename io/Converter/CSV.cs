@@ -28,23 +28,23 @@ namespace IO
             // Накладываем на них трансформации
             // Возвращаем SVG строку
 
-                                                         
-            SvgGroup group = new SvgGroup();             
-            svgDoc.Children.Add(group);                  
-                                                         
-            SvgRectangle asdf = new SvgRectangle {       
-                X = 100,                                 
-                Y = 100,                                 
-                Width = 200,                             
-                Height = 50,                             
-                Fill = new SvgColourServer(Color.Red),   
+
+            SvgGroup group = new SvgGroup();
+            svgDoc.Children.Add(group);
+
+            SvgRectangle asdf = new SvgRectangle {
+                X = 100,
+                Y = 100,
+                Width = 200,
+                Height = 50,
+                Fill = new SvgColourServer(Color.Red),
                 Transforms = new SvgTransformCollection()
-            };                                           
-                                                         
-            asdf.Transforms.Add(new SvgRotate(45));      
-                                                         
-            group.Children.Add(asdf);                    
-                                                         
+            };
+
+            asdf.Transforms.Add(new SvgRotate(45));
+
+            group.Children.Add(asdf);
+
             return svgDoc;
         }
 
@@ -65,3 +65,4 @@ namespace IO
             };
         }
     }
+}
