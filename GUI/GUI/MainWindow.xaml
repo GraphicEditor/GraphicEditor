@@ -9,8 +9,12 @@
     <!--WindowState="Maximized"-->
 
     <Grid Background="#e3d5ca"  >
-        
-        
-       
+        <Canvas Margin="211,74,81,301"/>
+        <GroupBox HorizontalAlignment="Left" Height="652" Header="GroupBox" Margin="11,13,0,0" VerticalAlignment="Top" Width="200">
+            <Button Content="Button" HorizontalAlignment="Left" Margin="24,0,0,0" VerticalAlignment="Top" Height="66" Width="90" Click="Button_Click"/>
+        </GroupBox>
+
+
+
     </Grid>
 </Window>
