@@ -53,7 +53,6 @@ public partial class MainWindow : Window
         Screen.Source = new DrawingImage(drawing.drawing);
     }
 
-}
 
     private void Click_Triangle(object sender, RoutedEventArgs e)
     {
