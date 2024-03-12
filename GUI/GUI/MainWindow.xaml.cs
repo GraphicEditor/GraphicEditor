@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +23,31 @@ namespace GUI
         public MainWindow()
         {
             InitializeComponent();
+        }
+        private void Click_Save(object sender, RoutedEventArgs e)
+        {
+           
+        }
+
+        private void Click_Circle(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Click_Triangle(object sender, RoutedEventArgs e)
+        {
+
+
+        }
+
+        private void Click_Rectangle(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Click_Polyline(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

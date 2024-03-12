@@ -94,5 +94,23 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon\active.png" />
+    <Resource Include="icon\bucket.png" />
+    <Resource Include="icon\circle-active.png" />
+    <Resource Include="icon\circle.png" />
+    <Resource Include="icon\move.png" />
+    <Resource Include="icon\not active.png" />
+    <Resource Include="icon\polyline-active.png" />
+    <Resource Include="icon\polyline.png" />
+    <Resource Include="icon\rectangle-active.png" />
+    <Resource Include="icon\rectangle.png" />
+    <Resource Include="icon\rotation.png" />
+    <Resource Include="icon\save.png" />
+    <Resource Include="icon\screen.png" />
+    <Resource Include="icon\size.png" />
+    <Resource Include="icon\triangle-active.png" />
+    <Resource Include="icon\triangle.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
