@@ -8,7 +8,6 @@
         mc:Ignorable="d"
         Title="Graphic editor" 
         Height="720" Width="1080">
-   <!--  -->
 
     <Grid Background="#e3d5ca"  >
         <Image x:Name="Screen" Source="icon/screen.png"  HorizontalAlignment="Left" Height="619" Margin="0,85,0,0" VerticalAlignment="Top" Width="815"/>
@@ -45,8 +44,6 @@
 
         </Canvas>
         <Menu HorizontalAlignment="Left" Height="430" Margin="833,264,0,0" VerticalAlignment="Top" Width="230" Background="#f5ebe0"/>
-
-
 
     </Grid>
 </Window>
