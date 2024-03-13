@@ -43,7 +43,27 @@
             </Button>
 
         </Canvas>
-        <Menu HorizontalAlignment="Left" Height="430" Margin="833,264,0,0" VerticalAlignment="Top" Width="230" Background="#f5ebe0"/>
+        <Canvas HorizontalAlignment="Left" Height="430" Margin="833,264,0,0" VerticalAlignment="Top" Width="230" Background="#f5ebe0">
+
+            <Button Height="50" Width="150" Background="#f5ebe0" Canvas.Left="40" Canvas.Top="40" Click="Click_Move"/>
+            <Image Source="GUI/icon/move.png" Width="44" Height="50" HorizontalAlignment="Left" Canvas.Left="42" Canvas.Top="42" VerticalAlignment="Top"/>
+            <TextBlock Text="Move" Canvas.Left="105" Canvas.Top="53" FontFamily="Century Gothic" FontWeight="Bold" FontSize="20" />
+
+            <Button Height="50" Width="150" Background="#f5ebe0" Canvas.Left="40" Canvas.Top="140" Click="Click_Rotate"/>
+            <Image Source="GUI/icon/rotation.png" Width="44" Height="50" HorizontalAlignment="Left" Canvas.Left="42" Canvas.Top="142" VerticalAlignment="Top"/>
+            <TextBlock Text="Rotate" Canvas.Left="105" Canvas.Top="153" FontFamily="Century Gothic" FontWeight="Bold" FontSize="20" />
+
+            <Button Height="50" Width="150" Background="#f5ebe0" Canvas.Left="40" Canvas.Top="240" Click="Click_Bucket"/>
+            <Image Source="GUI/icon/bucket.png" Width="44" Height="50" HorizontalAlignment="Left" Canvas.Left="45" Canvas.Top="242" VerticalAlignment="Top"/>
+            <TextBlock Text="Color" Canvas.Left="105" Canvas.Top="253" FontFamily="Century Gothic" FontWeight="Bold" FontSize="20" />
+
+            <Button Height="50" Width="150" Background="#f5ebe0" Canvas.Left="40" Canvas.Top="340" Click="Click_Resize"/>
+            <Image Source="GUI/icon/size.png" Width="44" Height="50" HorizontalAlignment="Left" Canvas.Left="42" Canvas.Top="342" VerticalAlignment="Top"/>
+            <TextBlock Text="Resize" Canvas.Left="105" Canvas.Top="353" FontFamily="Century Gothic" FontWeight="Bold" FontSize="20" />
+
+        </Canvas>
+
+
 
     </Grid>
 </Window>

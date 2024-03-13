@@ -70,4 +70,23 @@ public partial class MainWindow : Window
 
     }
 
+    private void Click_Move(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void Click_Rotate(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void Click_Bucket(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void Click_Resize(object sender, RoutedEventArgs e)
+    {
+
+    }
 }
