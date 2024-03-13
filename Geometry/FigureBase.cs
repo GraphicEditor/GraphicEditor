@@ -12,15 +12,18 @@ namespace Geometry
     {
         public static IFigure CreateRectangle()
         {
-            return new Rectangle();
+            throw new NotImplementedException();
+            //            return new Rectangle();
         }
         public static IFigure CreateTriangle()
         {
-            return new Triangle();
+            throw new NotImplementedException();
+            //           return new Triangle();
         }
         public static IFigure CreatePolyline()
         {
-            return new Polyline();
+            throw new NotImplementedException();
+            //            return new Polyline();
         }
         public static IFigure CreateCircle()
         {
@@ -44,15 +47,16 @@ namespace Geometry
         public IDictionary<string, Point> Parameters { get; } = new Dictionary<string, Point>()
         {
             ["Center"] = new Point(0, 0),
-            ["Point on circle"] = new Point(1, 0),
-        }
+            ["Point on circle"] = new Point(1, 0)
+        };
         public Point Origin => Parameters["Center"];
-        double Radius => (Parameters["Point on circle"] - Origin).Lenght;
+        double Radius => (Parameters["Point on circle"] - Origin).Length;
         public bool IsInternal(Point p)
         {
-            return (p - Origin).Norm <= Radius;
+            return (p - Origin).Length <= Radius;
         }
-        void Draw(IGraphicBase window)
+        public void Draw(IGraphicBase window)
+
         {
             window.DrawCircle(Origin, (float)Radius);
         }
