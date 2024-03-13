@@ -17,13 +17,12 @@ namespace Geometry
         }
         public static IFigure CreateTriangle()
         {
-            throw new NotImplementedException();
-            //           return new Triangle();
+            return new Triangle();
         }
         public static IFigure CreatePolyline()
         {
             throw new NotImplementedException();
-            //            return new Polyline();
+            //            return new Polyline(); 
         }
         public static IFigure CreateCircle()
         {
@@ -34,6 +33,7 @@ namespace Geometry
     {
         void DrawLine(Point a, Point b);
         void DrawCircle(Point center, float rad);
+        void DrawTriangle(Point a, Point b, Point c);
     }
     public interface IFigure
     {
@@ -59,6 +59,24 @@ namespace Geometry
 
         {
             window.DrawCircle(Origin, (float)Radius);
+        }
+    }
+    public class Triangle : IFigure 
+    {
+        public IDictionary<string, Point> Parametrs { get; } = new Dictionary<string, Point>()
+        {
+            ["Top Point"] = new Point(0, 2),
+            ["Left Point"] = new Point(-1, 0),
+            ["Right Point"] = new Point(1, 0)
+        };
+        public Point Top => Parametrs["Top Point"];
+        public Point Left => Parametrs["Left Point"];
+        public Point Right => Parametrs["Right Point"];
+        
+        
+        public void Draw(IGraphicBase window)
+        {
+            window.DrawTriangle(Top, Left, Right)
         }
     }
 
