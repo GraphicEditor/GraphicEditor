@@ -38,6 +38,7 @@ namespace Geometry
     public interface IFigure
     {
         IDictionary<string, Point> Parameters { get; }
+        IDictionary<string, Point> ParametersTriangle { get; }
         Point Origin { get; }
         bool IsInternal(Point p);
         void Draw(IGraphicBase window);
@@ -56,27 +57,34 @@ namespace Geometry
             return (p - Origin).Length <= Radius;
         }
         public void Draw(IGraphicBase window)
-
         {
             window.DrawCircle(Origin, (float)Radius);
         }
     }
     public class Triangle : IFigure 
     {
-        public IDictionary<string, Point> Parametrs { get; } = new Dictionary<string, Point>()
+        public IDictionary<string, Point> ParametersTriangle { get; } = new Dictionary<string, Point>()
         {
             ["Top Point"] = new Point(0, 2),
             ["Left Point"] = new Point(-1, 0),
             ["Right Point"] = new Point(1, 0)
         };
-        public Point Top => Parametrs["Top Point"];
-        public Point Left => Parametrs["Left Point"];
-        public Point Right => Parametrs["Right Point"];
+        public Point Top => ParametersTriangle["Top Point"];
+        public Point Left => ParametersTriangle["Left Point"];
+        public Point Right => ParametersTriangle["Right Point"];
         
         
         public void Draw(IGraphicBase window)
         {
             window.DrawTriangle(Top, Left, Right)
+        }
+    }
+    public class Position : IFigure
+    {
+        public void NewPosition(Point NewPointA, Point NewPointB)
+        {
+            Parameters["Center"] = NewPointA;
+            Parameters["Point on circle"] = NewPointB;
         }
     }
 
