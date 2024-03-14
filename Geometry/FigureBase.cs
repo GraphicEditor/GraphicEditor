@@ -28,12 +28,17 @@ namespace Geometry
         {
             return new Circle();
         }
+        public static IFigure CreateSquare()
+        {
+            return new Square();
+        }
     }
     public interface IGraphicBase
     {
         void DrawLine(Point a, Point b);
         void DrawCircle(Point center, float rad);
         void DrawTriangle(Point a, Point b, Point c);
+        void DrawSquare(Point topleft, Point sidelength)
     }
     public interface IFigure
     {
@@ -79,7 +84,35 @@ namespace Geometry
             window.DrawTriangle(Top, Left, Right)
         }
     }
-    public class Position : IFigure
+
+    public class Square : IFigure
+    {
+        public IDictionary<string, Point> Parameters { get; } = new Dictionary<string, Point>()
+        {
+            ["TopLeftCorner"] = new Point(0, 0),
+            ["BottomRightCorner"] = new Point(1, 1)
+        };
+
+        public Point Origin => Parameters["TopLeftCorner"];
+
+        public double SideLength => Parameters["BottomRightCorner"].X - Parameters["TopLeftCorner"].X;
+
+        public bool IsInternal(Point p)
+        {
+            double x = p.X - Origin.X;
+            double y = p.Y - Origin.Y;
+
+            return x >= 0 && x <= SideLength && y >= 0 && y <= SideLength;
+        }
+
+        public void Draw(IGraphicBase window)
+        {
+            window.DrawSquare(Origin, SideLength);
+        }
+    }
+}
+
+public class Position : IFigure
     {
         public void NewPosition(Point NewPointA, Point NewPointB)
         {
