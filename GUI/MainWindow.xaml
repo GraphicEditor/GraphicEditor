@@ -8,6 +8,39 @@
         mc:Ignorable="d"
         Title="Graphic editor" 
         Height="720" Width="1095">
+    <Window.Resources>
+        <SolidColorBrush x:Key="EllipseButtonBackground" Color="Blue"/>
+        
+                <Style TargetType="{x:Type Button}" x:Key="EllipseStyle" >
+                    <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="Grid">
+                        <Ellipse Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"                                 
+                                   Fill="{DynamicResource EllipseButtonBackground}" Margin="1, 1, 0, 0">
+                        </Ellipse>
+                            <Label Content="{TemplateBinding Content}"  Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="Grid" Property="Opacity" Value="0.5"/>
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="true">
+                                <Setter TargetName="Grid" Property="RenderTransform">
+                                <Setter.Value>
+                                    <TranslateTransform X="3" Y="3"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+            </Style>
+
+    </Window.Resources>
     <Grid Background="#e3d5ca" >
         <InkCanvas x:Name="inkCanvas1" Background="#e3d5ca"/>
         <Image x:Name="Screen" Source="GUI/icon/screen.png"  HorizontalAlignment="Left" Height="619" Margin="0,85,0,0" VerticalAlignment="Top" Width="815"/>
@@ -66,7 +99,15 @@
         <Slider x:Name="sld_RedColor" Background="Red" Minimum="0" Maximum="255" HorizontalAlignment="Left" Margin="818,28,0,0" VerticalAlignment="Top" Width="260" ValueChanged="sld_color_valueChanged"/>
         <Slider x:Name="sld_GreenColor" Background="Green" Minimum="0" Maximum="255" HorizontalAlignment="Left" Margin="818,66,0,0" VerticalAlignment="Top" Width="260" ValueChanged="sld_color_valueChanged"/>
         <Slider x:Name="sld_BlueColor" Background="Blue" Minimum="0" Maximum="255" HorizontalAlignment="Left" Margin="818,105,0,0" VerticalAlignment="Top" Width="260" ValueChanged="sld_color_valueChanged"/>
+        
 
         <Label x:Name="lbl1" Content="Your color" HorizontalAlignment="Left" Margin="916,154,0,0" VerticalAlignment="Top"/>
+        
+            <Button  Style="{StaticResource EllipseStyle}" Margin="833,185,211,483" Click="Button_Click" 
+                     Background="{DynamicResource EllipseButtonBackground}">
+                <Button.Resources>
+                    <SolidColorBrush x:Key="EllipseButtonBackground" Color="Aqua"/>
+                </Button.Resources>
+            </Button>
     </Grid>
 </Window>

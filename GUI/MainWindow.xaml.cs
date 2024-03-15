@@ -130,4 +130,9 @@ public partial class MainWindow : Window
 
         this.inkCanvas1.DefaultDrawingAttributes.Color = clr;
     }
+    Color SelectedColor=Colors.Red;
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        SelectedColor=((sender as Button)?.Background as SolidColorBrush)?.Color??SelectedColor;
+    }
 }
