@@ -35,6 +35,11 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        mcolor = new ColorRBG();
+        mcolor.red = 0;
+        mcolor.green = 0;
+        mcolor.blue = 0;
+        this.lbl1.Background = new SolidColorBrush(Color.FromRgb(mcolor.red, mcolor.green, mcolor.blue));
     }
 
     private void Click_Save(object sender, RoutedEventArgs e)
@@ -88,5 +93,41 @@ public partial class MainWindow : Window
     private void Click_Resize(object sender, RoutedEventArgs e)
     {
 
+    }
+
+    public class ColorRBG
+    {
+        public byte red { get; set; }
+        public byte green { get; set; }
+        public byte blue { get; set; }
+    }
+
+    public ColorRBG mcolor { get; set; }
+    public Color clr { get; set; }
+
+    private void sld_color_valueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) 
+    {
+        var slider = sender as Slider;
+        string crlName = slider.Name;
+        double value = slider.Value;
+
+        if(crlName.Equals("sld_RedColor"))
+        {
+            mcolor.red = Convert.ToByte(value);
+        }
+        if (crlName.Equals("sld_GreenColor"))
+        {
+            mcolor.green = Convert.ToByte(value);
+        }
+        if (crlName.Equals("sld_BlueColor"))
+        {
+            mcolor.blue = Convert.ToByte(value);
+        }
+
+        clr = Color.FromRgb(mcolor.red, mcolor.green, mcolor.blue);
+
+        this.lbl1.Background = new SolidColorBrush(Color.FromRgb(mcolor.red, mcolor.green, mcolor.blue));
+
+        this.inkCanvas1.DefaultDrawingAttributes.Color = clr;
     }
 }
