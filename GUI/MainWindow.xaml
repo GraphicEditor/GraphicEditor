@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
         Title="Graphic editor" 
-        Height="720" Width="1080">
+        Height="720" Width="1095">
     <Grid Background="#e3d5ca" >
         <InkCanvas x:Name="inkCanvas1" Background="#e3d5ca"/>
         <Image x:Name="Screen" Source="GUI/icon/screen.png"  HorizontalAlignment="Left" Height="619" Margin="0,85,0,0" VerticalAlignment="Top" Width="815"/>
