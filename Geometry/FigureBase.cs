@@ -15,9 +15,9 @@ namespace Geometry
             throw new NotImplementedException();
             //            return new Rectangle();
         }
-        public static IFigure CreateTriangle()
+        public static IFigure CreateTriangle(Point Top, Point Left, Point Right)
         {
-            return new Triangle();
+            return new Triangle(Top, Left, Right);
         }
         public static IFigure CreatePolyline()
         {
@@ -37,16 +37,16 @@ namespace Geometry
     {
         void DrawLine(Point a, Point b);
         void DrawCircle(Point center, float rad);
-        void DrawTriangle(Point a, Point b, Point c);
+        void DrawTriangle(Point Top, Point Left, Point Right);
         void DrawSquare(Point topleft, Point sidelength)
     }
     public interface IFigure
     {
         IDictionary<string, Point> Parameters { get; }
-        IDictionary<string, Point> ParametersTriangle { get; }
         Point Origin { get; }
         bool IsInternal(Point p);
         void Draw(IGraphicBase window);
+        void Move(Point p);
     }
     public class Circle : IFigure
     {
@@ -65,23 +65,37 @@ namespace Geometry
         {
             window.DrawCircle(Origin, (float)Radius);
         }
+        public void Move(Point p) // p - diff
+        {
+            Vector vp = new Vector(p.X, p.Y);
+            Parameters["Center"] += vp;
+            Parameters["Point on circle"] += vp;
+        }
     }
     public class Triangle : IFigure 
     {
-        public IDictionary<string, Point> ParametersTriangle { get; } = new Dictionary<string, Point>()
+        public IDictionary<string, Point> Parameters { get; } = new Dictionary<string, Point>()
         {
             ["Top Point"] = new Point(0, 2),
             ["Left Point"] = new Point(-1, 0),
             ["Right Point"] = new Point(1, 0)
         };
-        public Point Top => ParametersTriangle["Top Point"];
-        public Point Left => ParametersTriangle["Left Point"];
-        public Point Right => ParametersTriangle["Right Point"];
-        
-        
+        public Point Top => Parameters["Top Point"];
+        public Point Left => Parameters["Left Point"];
+        public Point Right => Parameters["Right Point"];
+
+        public Point Origin => Top;
+
         public void Draw(IGraphicBase window)
         {
             window.DrawTriangle(Top, Left, Right)
+        }
+
+        public void Move(Point p) // p - diff
+        {
+            Vector vp = new Vector(p.X, p.Y);
+            Parameters["Center"] += vp;
+            Parameters["Point on circle"] += vp;
         }
     }
 
@@ -110,15 +124,7 @@ namespace Geometry
             window.DrawSquare(Origin, SideLength);
         }
     }
+    
 }
-
-public class Position : IFigure
-    {
-        public void NewPosition(Point NewPointA, Point NewPointB)
-        {
-            Parameters["Center"] = NewPointA;
-            Parameters["Point on circle"] = NewPointB;
-        }
-    }
 
 }
