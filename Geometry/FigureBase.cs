@@ -47,6 +47,7 @@ namespace Geometry
         bool IsInternal(Point p);
         void Draw(IGraphicBase window);
         void Move(Point p);
+        Point GetCenter();
     }
     public class Circle : IFigure
     {
@@ -70,6 +71,10 @@ namespace Geometry
             Vector vp = new Vector(p.X, p.Y);
             Parameters["Center"] += vp;
             Parameters["Point on circle"] += vp;
+        }
+        public Point GetCenter()
+        {
+            return Origin;
         }
     }
     public class Triangle : IFigure 
@@ -96,6 +101,10 @@ namespace Geometry
             Vector vp = new Vector(p.X, p.Y);
             Parameters["Center"] += vp;
             Parameters["Point on circle"] += vp;
+        }
+        public Point GetCenter()
+        {
+            return new Point((Top.X + Left.X + Right.X) / 3, (Top.Y + Left.Y + Right.Y) / 3);
         }
     }
 
