@@ -44,6 +44,7 @@ namespace Geometry
         void Move(Point p);
         Point GetCenter();
         void Scale(float Scale);
+        void Rotate(float Angle);
     }
     public class Circle : IFigure
     {
@@ -110,14 +111,12 @@ namespace Geometry
             window.DrawTriangle(Top, Left, Right)
         }
 
-
-        // TODO реализовать
         public bool IsInternal(Point p)
         {
             return true;
         }
 
-        public void Move(Point p) // p - diff
+        public void Move(Point p) 
         {
             Vector vp = new Vector(p.X, p.Y);
             Parameters["Center"] += vp;
@@ -139,11 +138,33 @@ namespace Geometry
             Matrix translationMatrix2 = Matrix.Identity;
             translationMatrix2.Translate(centerPoint.X, centerPoint.Y);
 
-            // совмещаем центр масс и начало координат (translationMatrix1)
-            // масштабируем точку на Scale относительно (0, 0) (scaleMatrix)
-            // возвращаем центр масс (translationMatrix2)
             foreach (var pair in Parameters)
                 Parameters[pair.Key] = translationMatrix2.Transform(scaleMatrix.Transform(translationMatrix1.Transform(pair.Value)));
+        }
+
+        public void Rotate(float Angle)
+        {
+            Point centerPoint = this.GetCenter();
+
+            Matrix translationMatrix1 = Matrix.Identity;
+            translationMatrix1.Translate(-centerPoint.X, -centerPoint.Y);
+            Matrix rotationMatrix = new Matrix();
+            rotationMatrix.Rotate(Angle);
+            Matrix translationMatrix2 = Matrix.Identity;
+            translationMatrix2.Translate(centerPoint.X, centerPoint.Y);
+
+            // совмещаем центр масс и начало координат (translationMatrix1)
+            // поворачиваем точку на Angle относительно (0, 0) (rotationMatrix)
+            // возвращаем центр масс (translationMatrix2)
+            foreach (var pair in Parameters)
+            {
+                /*Point a = pair.Value;
+                a = translationMatrix1.Transform(pair.Value);
+                Point b = rotationMatrix.Transform(a);
+                Point c = translationMatrix2.Transform(b);
+                Parameters[pair.Key] = c;*/
+                Parameters[pair.Key] = translationMatrix2.Transform(rotationMatrix.Transform(translationMatrix1.Transform(pair.Value)));
+            }
         }
     }
 
@@ -168,8 +189,7 @@ namespace Geometry
             Parameters["Bottom Left"] = BottomLeft;
             Parameters["Bottom Right"] = new Point(TopRight.X, BottomLeft.Y);
         }
-        public Rectangle() { }
-        // TODO реализовать
+
         public Point Origin => TopRight;
 
         public void Draw(IGraphicBase window)
@@ -182,7 +202,6 @@ namespace Geometry
             return new Point((TopRight.X + TopLeft.X + BottomLeft.X + BottomRight.X) / 4, (TopRight.Y + TopLeft.Y + BottomLeft.Y + BottomRight.Y) / 4);
         }
 
-        // TODO реализовать
         public bool IsInternal(Point p)
         {
             return true;
@@ -206,11 +225,25 @@ namespace Geometry
             Matrix translationMatrix2 = Matrix.Identity;
             translationMatrix2.Translate(centerPoint.X, centerPoint.Y);
 
-            // совмещаем центр масс и начало координат (translationMatrix1)
-            // масштабируем точку на Scale относительно (0, 0) (scaleMatrix)
-            // возвращаем центр масс (translationMatrix2)
             foreach (var pair in Parameters)
                 Parameters[pair.Key] = translationMatrix2.Transform(scaleMatrix.Transform(translationMatrix1.Transform(pair.Value)));
+        }
+
+        public void Rotate(float Angle)
+        {
+            Point centerPoint = this.GetCenter();
+
+            Matrix translationMatrix1 = Matrix.Identity;
+            translationMatrix1.Translate(-centerPoint.X, -centerPoint.Y);
+            Matrix rotationMatrix = new Matrix();
+            rotationMatrix.Rotate(Angle);
+            Matrix translationMatrix2 = Matrix.Identity;
+            translationMatrix2.Translate(centerPoint.X, centerPoint.Y);
+
+            foreach (var pair in Parameters)
+            {
+                Parameters[pair.Key] = translationMatrix2.Transform(rotationMatrix.Transform(translationMatrix1.Transform(pair.Value)));
+            }
         }
     }
 
