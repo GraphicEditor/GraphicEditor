@@ -10,10 +10,9 @@ namespace Geometry
 {
     public static class FigureBase
     {
-        public static IFigure CreateRectangle()
+        public static IFigure CreateRectangle(Point BottomLeft, Point TopRight)
         {
-            throw new NotImplementedException();
-            //            return new Rectangle();
+            return new Rectangle(BottomLeft, TopRight);
         }
         public static IFigure CreateTriangle(Point Top, Point Left, Point Right)
         {
@@ -38,7 +37,7 @@ namespace Geometry
         void DrawLine(Point a, Point b);
         void DrawCircle(Point center, float rad);
         void DrawTriangle(Point Top, Point Left, Point Right);
-        void DrawSquare(Point topleft, Point sidelength)
+        void DrawRectangle(Point TopRight, Point TopLeft, Point BottomLeft, Point BottomRRight);
     }
     public interface IFigure
     {
@@ -108,29 +107,34 @@ namespace Geometry
         }
     }
 
-    public class Square : IFigure
+    public class Rectangle : IFigure
     {
         public IDictionary<string, Point> Parameters { get; } = new Dictionary<string, Point>()
         {
-            ["TopLeftCorner"] = new Point(0, 0),
-            ["BottomRightCorner"] = new Point(1, 1)
+            ["Top Right"] = new Point(0, 2),
+            ["Top Left"] = new Point(-1, 0),
+            ["Bottom Left"] = new Point(1, 0),
+            ["Bottom Right"] = new Point(1, 0)
         };
 
-        public Point Origin => Parameters["TopLeftCorner"];
-
-        public double SideLength => Parameters["BottomRightCorner"].X - Parameters["TopLeftCorner"].X;
-
-        public bool IsInternal(Point p)
+        Point TopRight => Parameters["Top Right"];
+        Point TopLeft => Parameters["Top Left"];
+        Point BottomLeft => Parameters["Bottom Left"];
+        Point BottomRight => Parameters["Bottom Right"];
+        public Rectangle(Point BottomLeft, Point TopRight)
         {
-            double x = p.X - Origin.X;
-            double y = p.Y - Origin.Y;
-
-            return x >= 0 && x <= SideLength && y >= 0 && y <= SideLength;
+            Parameters["Top Right"] = TopRight;
+            Parameters["Top Left"] = new Point(BottomLeft.X, TopRight.Y);
+            Parameters["Bottom Left"] = BottomLeft;
+            Parameters["Bottom Right"] = new Point(TopRight.X, BottomLeft.Y);
         }
+        public Rectangle() { }
+        // TODO реализовать
+        public Point Origin => TopRight;
 
         public void Draw(IGraphicBase window)
         {
-            window.DrawSquare(Origin, SideLength);
+            window.DrawRectangle(TopRight, TopLeft, BottomLeft, BottomRight);
         }
     }
     
