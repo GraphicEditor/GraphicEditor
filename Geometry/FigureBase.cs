@@ -27,10 +27,6 @@ namespace Geometry
         {
             return new Circle();
         }
-        public static IFigure CreateSquare()
-        {
-            return new Square();
-        }
     }
     public interface IGraphicBase
     {
@@ -47,6 +43,7 @@ namespace Geometry
         void Draw(IGraphicBase window);
         void Move(Point p);
         Point GetCenter();
+        void Scale(float Scale);
     }
     public class Circle : IFigure
     {
@@ -75,6 +72,24 @@ namespace Geometry
         {
             return Origin;
         }
+
+        public void Scale(float Scale)
+        {
+            Point centerPoint = this.GetCenter();
+
+            Matrix translationMatrix1 = Matrix.Identity;
+            translationMatrix1.Translate(-centerPoint.X, -centerPoint.Y);
+            Matrix scaleMatrix = new Matrix();
+            scaleMatrix.Scale(Scale, Scale);
+            Matrix translationMatrix2 = Matrix.Identity;
+            translationMatrix2.Translate(centerPoint.X, centerPoint.Y);
+
+            // совмещаем центр масс и начало координат (translationMatrix1)
+            // масштабируем точку на Scale относительно (0, 0) (scaleMatrix)
+            // возвращаем центр масс (translationMatrix2)
+            foreach (var pair in Parameters)
+                Parameters[pair.Key] = translationMatrix2.Transform(scaleMatrix.Transform(translationMatrix1.Transform(pair.Value)));
+        }
     }
     public class Triangle : IFigure 
     {
@@ -95,6 +110,13 @@ namespace Geometry
             window.DrawTriangle(Top, Left, Right)
         }
 
+
+        // TODO реализовать
+        public bool IsInternal(Point p)
+        {
+            return true;
+        }
+
         public void Move(Point p) // p - diff
         {
             Vector vp = new Vector(p.X, p.Y);
@@ -104,6 +126,24 @@ namespace Geometry
         public Point GetCenter()
         {
             return new Point((Top.X + Left.X + Right.X) / 3, (Top.Y + Left.Y + Right.Y) / 3);
+        }
+
+        public void Scale(float Scale)
+        {
+            Point centerPoint = this.GetCenter();
+
+            Matrix translationMatrix1 = Matrix.Identity;
+            translationMatrix1.Translate(-centerPoint.X, -centerPoint.Y);
+            Matrix scaleMatrix = new Matrix();
+            scaleMatrix.Scale(Scale, Scale);
+            Matrix translationMatrix2 = Matrix.Identity;
+            translationMatrix2.Translate(centerPoint.X, centerPoint.Y);
+
+            // совмещаем центр масс и начало координат (translationMatrix1)
+            // масштабируем точку на Scale относительно (0, 0) (scaleMatrix)
+            // возвращаем центр масс (translationMatrix2)
+            foreach (var pair in Parameters)
+                Parameters[pair.Key] = translationMatrix2.Transform(scaleMatrix.Transform(translationMatrix1.Transform(pair.Value)));
         }
     }
 
@@ -136,8 +176,44 @@ namespace Geometry
         {
             window.DrawRectangle(TopRight, TopLeft, BottomLeft, BottomRight);
         }
+
+        public Point GetCenter()
+        {
+            return new Point((TopRight.X + TopLeft.X + BottomLeft.X + BottomRight.X) / 4, (TopRight.Y + TopLeft.Y + BottomLeft.Y + BottomRight.Y) / 4);
+        }
+
+        // TODO реализовать
+        public bool IsInternal(Point p)
+        {
+            return true;
+        }
+
+        public void Move(Point p)
+        {
+            Vector vp = new Vector(p.X, p.Y);
+            foreach (var pair in Parameters)
+                Parameters[pair.Key] += vp;
+        }
+
+        public void Scale(float Scale)
+        {
+            Point centerPoint = this.GetCenter();
+
+            Matrix translationMatrix1 = Matrix.Identity;
+            translationMatrix1.Translate(-centerPoint.X, -centerPoint.Y);
+            Matrix scaleMatrix = new Matrix();
+            scaleMatrix.Scale(Scale, Scale);
+            Matrix translationMatrix2 = Matrix.Identity;
+            translationMatrix2.Translate(centerPoint.X, centerPoint.Y);
+
+            // совмещаем центр масс и начало координат (translationMatrix1)
+            // масштабируем точку на Scale относительно (0, 0) (scaleMatrix)
+            // возвращаем центр масс (translationMatrix2)
+            foreach (var pair in Parameters)
+                Parameters[pair.Key] = translationMatrix2.Transform(scaleMatrix.Transform(translationMatrix1.Transform(pair.Value)));
+        }
     }
-    
+
 }
 
 }
