@@ -12,4 +12,8 @@
     <Compile Remove="GUI\MainWindow.xaml.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+      <Resource Include="**\*.png" />
+  </ItemGroup>
+
 </Project>
