@@ -68,5 +68,6 @@
         <Slider x:Name="sld_BlueColor" Background="Blue" Minimum="0" Maximum="255" HorizontalAlignment="Left" Margin="818,105,0,0" VerticalAlignment="Top" Width="260" ValueChanged="sld_color_valueChanged"/>
 
         <Label x:Name="lbl1" Content="Your color" HorizontalAlignment="Left" Margin="916,154,0,0" VerticalAlignment="Top"/>
+
     </Grid>
 </Window>
