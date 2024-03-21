@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Ink;
 using System.Windows.Documents;
 using System.Xml.Linq;
+using System.Windows.Media;
 
 namespace IO
 {
@@ -28,7 +29,7 @@ namespace IO
                 Y = new SvgUnit(SvgUnitType.Pixel, 0),
                 Width = document.Width,
                 Height = document.Height,
-                Fill = new SvgColourServer(System.Drawing.Color.FromArgb(document.BackgroundColor.r, document.BackgroundColor.g, document.BackgroundColor.b)),
+                Fill = new SvgColourServer(System.Drawing.Color.FromArgb(document.BackgroundColor.R, document.BackgroundColor.G, document.BackgroundColor.B)),
             };
             svgDocument.Children.Add(backgroundRect);
 
@@ -42,7 +43,7 @@ namespace IO
         public static void SaveSvgDoucument(Document document, SvgDocument svgDocument)
         {
 
-            using (XmlTextWriter xmlTextWriter = new XmlTextWriter(document.Path+document.Name, System.Text.Encoding.UTF8))
+            using (XmlTextWriter xmlTextWriter = new XmlTextWriter(document.Path + document.Name + ".SVG", System.Text.Encoding.UTF8))
             {
                 xmlTextWriter.Formatting = Formatting.Indented;
                 svgDocument.Write(xmlTextWriter);
@@ -57,6 +58,8 @@ namespace IO
                     return Circle(element, document);
                 case "Triangle":
                     return Triangle(element, document);
+                case "Rectangle":
+                    return Rectangle(element, document);
                 default:
                     throw new Exception();
             }
@@ -64,14 +67,14 @@ namespace IO
 
         private static SvgCircle Circle(IVisualGeometry element, Document document)
         {
-            var SvgCircleCoord = LocalCoordToSvgCoord(element.Figure.Origin, document);
+            var SvgCircleCoord = element.Figure.Origin;
             var circle = new SvgCircle
             {
                 CenterX = new SvgUnit(SvgUnitType.Pixel, (float)SvgCircleCoord.X),
                 CenterY = new SvgUnit(SvgUnitType.Pixel, (float)SvgCircleCoord.Y),
                 Radius = new SvgUnit(SvgUnitType.Pixel, (float)(element.Figure.Parameters["Point on circle"] - element.Figure.Origin).Length),
-                Fill = new SvgColourServer(System.Drawing.Color.FromArgb(element.BackgroundBrush.r, element.BackgroundBrush.g, element.BackgroundBrush.b)),
-                Stroke = new SvgColourServer(System.Drawing.Color.FromArgb(element.BorderBrush.r, element.BorderBrush.g, element.BorderBrush.b)),
+                Fill = new SvgColourServer(System.Drawing.Color.FromArgb(element.BackgroundBrush.A, element.BackgroundBrush.R, element.BackgroundBrush.G, element.BackgroundBrush.B)),
+                Stroke = new SvgColourServer(System.Drawing.Color.FromArgb(element.BorderBrush.A, element.BorderBrush.R, element.BorderBrush.G, element.BorderBrush.B)),
                 StrokeWidth = (float)element.BorderThickness
 
             };
@@ -80,9 +83,9 @@ namespace IO
 
         private static SvgPolygon Triangle(IVisualGeometry element, Document document)
         {
-            var SvgTriangleCoordTop = LocalCoordToSvgCoord(element.Figure.Parameters["Top Point"], document);
-            var SvgTriangleCoordLeft = LocalCoordToSvgCoord(element.Figure.Parameters["Left Point"], document);
-            var SvgTriangleCoordRight = LocalCoordToSvgCoord(element.Figure.Parameters["Right Point"], document);
+            var SvgTriangleCoordTop = element.Figure.Parameters["Top Point"];
+            var SvgTriangleCoordLeft = element.Figure.Parameters["Left Point"];
+            var SvgTriangleCoordRight = element.Figure.Parameters["Right Point"];
             var triangle = new SvgPolygon
             {
                 Points = new SvgPointCollection
@@ -91,48 +94,35 @@ namespace IO
                     new SvgUnit(SvgUnitType.Pixel, (float)SvgTriangleCoordLeft.X), new SvgUnit(SvgUnitType.Pixel, (float)SvgTriangleCoordLeft.Y),
                     new SvgUnit(SvgUnitType.Pixel, (float)SvgTriangleCoordRight.X), new SvgUnit(SvgUnitType.Pixel, (float)SvgTriangleCoordRight.Y)
                 },
-                Fill = new SvgColourServer(System.Drawing.Color.FromArgb(element.BackgroundBrush.r, element.BackgroundBrush.g, element.BackgroundBrush.b)),
-                Stroke = new SvgColourServer(System.Drawing.Color.FromArgb(element.BorderBrush.r, element.BorderBrush.g, element.BorderBrush.b)),
+                Fill = new SvgColourServer(System.Drawing.Color.FromArgb(element.BackgroundBrush.A, element.BackgroundBrush.R, element.BackgroundBrush.G, element.BackgroundBrush.B)),
+                Stroke = new SvgColourServer(System.Drawing.Color.FromArgb(element.BorderBrush.A, element.BorderBrush.R, element.BorderBrush.G, element.BorderBrush.B)),
                 StrokeWidth = (float)element.BorderThickness
             };
             return triangle;
         }
 
-        private static Point LocalCoordToSvgCoord(Point point, Document document) => new Point(point.X + document.Width / 2, point.Y + document.Height / 2);
-
-        public static Document doc_create()
+        private static SvgPolygon Rectangle(IVisualGeometry element, Document document)
         {
-            var document = new Document();
-            document.Name = "output.SVG";
-            document.Width = 800;
-            document.Height = 450;
-            document.Path = "";
-            document.BackgroundColor = new Color(169, 169, 169);
-            
-            Circle a = new Circle();
-            a.Parameters["Center"] = new Point(10, 10);
-            a.Parameters["Point on circle"] = new Point(100, 100);
-            var _a = new VisualGeometry("Circle", a);
-            _a.BackgroundBrush = new Color(255, 0, 0);
-            _a.BorderBrush = new Color(255, 255, 0);
-            _a.BorderThickness = 10; 
-
-            List<IVisualGeometry> aaa = new List<IVisualGeometry>();
-            aaa.Add(_a);
-
-
-            document.VisualGeometries = aaa;
-
-
-            return document;
+            var SvgRectangleCoordTopRight = element.Figure.Parameters["Top Right"];
+            var SvgRectangleCoordTopLeft = element.Figure.Parameters["Top Left"];
+            var SvgRectangleCoordBottomLeft = element.Figure.Parameters["Bottom Left"];
+            var SvgRectangleCoordBottomRight = element.Figure.Parameters["Bottom Right"];
+            var rectangle = new SvgPolygon
+            {
+                Points = new SvgPointCollection
+                {
+                    new SvgUnit(SvgUnitType.Pixel, (float)SvgRectangleCoordTopRight.X), new SvgUnit(SvgUnitType.Pixel, (float)SvgRectangleCoordTopRight.Y),
+                    new SvgUnit(SvgUnitType.Pixel, (float)SvgRectangleCoordTopLeft.X), new SvgUnit(SvgUnitType.Pixel, (float)SvgRectangleCoordTopLeft.Y),
+                    new SvgUnit(SvgUnitType.Pixel, (float)SvgRectangleCoordBottomLeft.X), new SvgUnit(SvgUnitType.Pixel, (float)SvgRectangleCoordBottomLeft.Y),
+                    new SvgUnit(SvgUnitType.Pixel, (float)SvgRectangleCoordBottomRight.X), new SvgUnit(SvgUnitType.Pixel, (float)SvgRectangleCoordBottomRight.Y)
+                },
+                Fill = new SvgColourServer(System.Drawing.Color.FromArgb(element.BackgroundBrush.A, element.BackgroundBrush.R, element.BackgroundBrush.G, element.BackgroundBrush.B)),
+                Stroke = new SvgColourServer(System.Drawing.Color.FromArgb(element.BorderBrush.A, element.BorderBrush.R, element.BorderBrush.G, element.BorderBrush.B)),
+                StrokeWidth = (float)element.BorderThickness
+            };
+            return rectangle;
         }
 
-
-        public static void ttt(Document document)
-        {
-            var a = CreateSvgDocument(document);
-            SaveSvgDoucument(document, a);
-
-        }
+        private static Point LocalCoordToSvgCoord(Point point, Document document) => new Point(point.X, point.Y); //=> new Point(point.X + document.Width / 2, point.Y + document.Height / 2);
     }
 }
