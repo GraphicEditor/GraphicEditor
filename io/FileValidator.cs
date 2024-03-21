@@ -11,7 +11,7 @@ namespace IO
         public static HashSet<string> SVG_EXTENSION = new HashSet<string> { "svg" };
         public static HashSet<string> PNG_EXTENSION = new HashSet<string> { "png" };
         public static HashSet<string> JPEG_EXTENSION = new HashSet<string> { "jpg", "jpeg" };
-        public static HashSet<string> JSON_EXTENSION = new HashSet<string> { "json" };
+        
 
         public static void CheckParentDirectory(string filename)
         {
