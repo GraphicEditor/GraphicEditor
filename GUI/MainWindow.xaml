@@ -69,12 +69,6 @@
                 </StackPanel>
             </Button>
 
-            <Button Height="50" Width="50" Background="#f5ebe0" Canvas.Left="410" Click="Click_Polyline">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="GUI/icon/polyline.png" Width="45" Height="50"/>
-                </StackPanel>
-            </Button>
-
         </Canvas>
         <Canvas HorizontalAlignment="Left" Height="430" Margin="833,264,0,0" VerticalAlignment="Top" Width="230" Background="#f5ebe0">
 

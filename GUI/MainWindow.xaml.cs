@@ -70,11 +70,6 @@ public partial class MainWindow : Window
 
     }
 
-    private void Click_Polyline(object sender, RoutedEventArgs e)
-    {
-
-    }
-
     private void Click_Move(object sender, RoutedEventArgs e)
     {
 
