@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Geometry;
+using Logic;
 
 namespace GUI;
 
@@ -17,23 +18,76 @@ namespace GUI;
 /// </summary>
 public partial class MainWindow : Window
 {
-    class DrawAssistant:IGraphicBase
+    public Document Document { get; set; }
+    class DrawAssistant : IGraphicBase
     {
-        public  DrawingGroup drawing = new();
-        public void DrawLine(Point a, Point b)
-        {
-            drawing.Children.Add(new GeometryDrawing(new SolidColorBrush(Colors.Black),new Pen(new SolidColorBrush(Colors.Red),1), new LineGeometry(a, b)));
-        }
+        public DrawingGroup drawing = new();
+        public Color BackgroundBrush { get; set; }
+        public Color BorderBrush { get; set; }
+        public double BorderThickness { get; set; }
+
         public void DrawCircle(Point center, float rad)
         {
-            drawing.Children.Add(new GeometryDrawing(new SolidColorBrush(Colors.Black), new Pen(new SolidColorBrush(Colors.Red), 1),
-                new EllipseGeometry(center,rad,rad)));
+            drawing.Children.Add(new GeometryDrawing(new SolidColorBrush(BackgroundBrush),
+                                 new Pen(new SolidColorBrush(BorderBrush), BorderThickness),
+                                 new EllipseGeometry(center, rad, rad)));
+        }
+        public void DrawLine(Point a, Point b)
+        {
+            drawing.Children.Add(new GeometryDrawing(new SolidColorBrush(BackgroundBrush),
+                                                     new Pen(new SolidColorBrush(BorderBrush), BorderThickness),
+                                                     new LineGeometry(a, b)));
+        }
+
+        public void DrawTriangle(Point Top, Point Left, Point Right)
+        {
+            StreamGeometry streamGeometry = new StreamGeometry();
+            using (StreamGeometryContext geometryContext = streamGeometry.Open())
+            {
+                // Начинаем фигуру с верхнего угла
+                geometryContext.BeginFigure(Top, true, true);
+
+                // Определяем линию влево 
+                geometryContext.LineTo(Left, true, false);
+
+                // Определяем линию вправо
+                geometryContext.LineTo(Right, true, false);
+
+                // Завершаем фигуру
+                geometryContext.Close();
+            }
+            drawing.Children.Add(new GeometryDrawing(new SolidColorBrush(BackgroundBrush),
+                                                     new Pen(new SolidColorBrush(BorderBrush), BorderThickness),
+                                                     streamGeometry));
+        }
+
+        public void DrawRectangle(Point TopRight, Point TopLeft, Point BottomLeft, Point BottomRight)
+        {
+            StreamGeometry streamGeometry = new StreamGeometry();
+            using (StreamGeometryContext geometryContext = streamGeometry.Open())
+            {
+                // Начинаем фигуру с верхнего правого угла 
+                geometryContext.BeginFigure(TopRight, true, true);
+
+                // Определяем линии против часовой стрелки
+                geometryContext.LineTo(TopLeft, true, false);
+                geometryContext.LineTo(BottomLeft, true, false);
+                geometryContext.LineTo(BottomRight, true, false);
+
+                // Завершаем фигуру
+                geometryContext.Close();
+            }
+            drawing.Children.Add(new GeometryDrawing(new SolidColorBrush(BackgroundBrush),
+                                                     new Pen(new SolidColorBrush(BorderBrush), BorderThickness),
+                                                     streamGeometry));
         }
     }
 
 
     public MainWindow()
     {
+        Document = new Document("output", "", 1095, 720, Color.FromRgb(227, 213, 202));
+
         InitializeComponent();
         mcolor = new ColorRBG();
         mcolor.red = 0;
@@ -61,8 +115,23 @@ public partial class MainWindow : Window
 
     private void Click_Triangle(object sender, RoutedEventArgs e)
     {
+        // TODO Получить точки 
+        Point Top = new Point(500, 100); // <--
+        Point Left = new Point(100, 800); // <--
+        Point Right = new Point(1000, 800); // <--
+        // Вызвать соответствующий конструктор 
+        var Figure = FigureBase.CreateTriangle(Top, Left, Right);
 
+        // TODO Получить цвет заливки и контура, тощину контура
+        // если заливки нет (фигура прозрачная) VisualFigure.BackgroundBrush = Color.FromArgb(0, r, g, b);
+        var VisualFigure = VisualGeometryFactory.CreateVisualGeometry(Figure.GetType().Name, Figure);
+        VisualFigure.BackgroundBrush = Color.FromArgb(0, 1, 1, 1); // <-- цвет заливки
+        VisualFigure.BorderBrush = Color.FromRgb(mcolor.red, mcolor.green, mcolor.blue); // <-- цвет контура
+        VisualFigure.BorderThickness = 1; // <-- толщина контура
 
+        // перед каждым изменением Document.VisualGeometries выполнять JSON.JSONPUSH(Document, JsonStack);
+        // JSON.JSONPUSH(Document, JsonStack);
+        Document.VisualGeometries.Add(VisualFigure);
     }
 
     private void Click_Rectangle(object sender, RoutedEventArgs e)

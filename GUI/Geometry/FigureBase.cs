@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Shapes;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Geometry
 {
@@ -91,6 +92,8 @@ namespace Geometry
             foreach (var pair in Parameters)
                 Parameters[pair.Key] = translationMatrix2.Transform(scaleMatrix.Transform(translationMatrix1.Transform(pair.Value)));
         }
+
+        public void Rotate(float Angle){}
     }
     public class Triangle : IFigure 
     {
@@ -104,11 +107,18 @@ namespace Geometry
         public Point Left => Parameters["Left Point"];
         public Point Right => Parameters["Right Point"];
 
+        public Triangle( Point Top,  Point Left, Point Right)
+        {
+            Parameters["Top Point"] = Top;
+            Parameters["Left Point"] = Left;
+            Parameters["Right Point"] = Right;
+        }
+
         public Point Origin => Top;
 
         public void Draw(IGraphicBase window)
         {
-            window.DrawTriangle(Top, Left, Right)
+            window.DrawTriangle(Top, Left, Right);
         }
 
         public bool IsInternal(Point p)
@@ -249,4 +259,4 @@ namespace Geometry
 
 }
 
-}
+
