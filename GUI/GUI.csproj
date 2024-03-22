@@ -16,4 +16,10 @@
       <Resource Include="**\*.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="PdfSharp" Version="6.0.0" />
+    <PackageReference Include="SVG" Version="3.4.7" />
+  </ItemGroup>
+
 </Project>

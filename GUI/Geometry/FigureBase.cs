@@ -7,6 +7,7 @@ using System.Windows.Shapes;
 using System.Windows;
 using System.Windows.Media;
 
+
 namespace Geometry
 {
     public static class FigureBase
@@ -23,9 +24,9 @@ namespace Geometry
         {
             return new Polyline(points);
         }
-        public static IFigure CreateCircle()
+        public static IFigure CreateCircle(Point center, Point circle)
         {
-            return new Circle();
+            return new Circle(center, circle);
         }
     }
     public interface IGraphicBase
@@ -34,10 +35,10 @@ namespace Geometry
         void DrawCircle(Point center, float rad);
         void DrawTriangle(Point top, Point left, Point right); // Добавляем метод для отрисовки треугольников
         void DrawRectangle(Point topLeft, Point topRight, Point bottomLeft, Point bottomRight); // Добавляем метод для отрисовки прямоугольников
-        void Move(Point vector); // Добавляем метод перемещения фигуры
-        void Rotate(double angle); // Добавляем метод поворота фигуры
-        void Fill(Brush brush); // Добавляем метод заливки фигуры
-        void Resize(float scaleFactor); // Добавляем метод изменения размера фигуры
+       // void Move(Point vector); // Добавляем метод перемещения фигуры
+        //void Rotate(double angle); // Добавляем метод поворота фигуры
+        //void Fill(Brush brush); // Добавляем метод заливки фигуры
+        //void Resize(float scaleFactor); // Добавляем метод изменения размера фигуры
     }
     public interface IFigure
     {
@@ -58,11 +59,17 @@ namespace Geometry
             ["Center"] = new Point(0, 0),
             ["Point on circle"] = new Point(1, 0)
         };
+
         public Point Origin => Parameters["Center"];
         double Radius => (Parameters["Point on circle"] - Origin).Length;
         public bool IsInternal(Point p)
         {
             return (p - Origin).Length <= Radius;
+        }
+        public Circle(Point center, Point circle)
+        {
+            Parameters["Center"] = center;
+            Parameters["Point on circle"] = circle;
         }
         public void Draw(IGraphicBase window)
         {
