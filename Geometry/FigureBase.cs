@@ -104,6 +104,13 @@ namespace Geometry
         public Point Left => Parameters["Left Point"];
         public Point Right => Parameters["Right Point"];
 
+        public Triangle(Point Top, Point Left, Point Right)
+        {
+            Parameters["Top Point"] = Top;
+            Parameters["Left Point"] = Left;
+            Parameters["Right Point"] = Right;
+        }
+
         public Point Origin => Top;
 
         public void Draw(IGraphicBase window)
